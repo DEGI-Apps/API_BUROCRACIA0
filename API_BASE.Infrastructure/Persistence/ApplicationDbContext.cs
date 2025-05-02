@@ -45,5 +45,34 @@ namespace API_BASE.Infrastructure.Persistence
 
             return await base.SaveChangesAsync(cancellationToken);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Filtro global para borrado logico
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(AuditableEntity).IsAssignableFrom(entityType.ClrType))
+                {
+                    var method = typeof(ApplicationDbContext)
+                        .GetMethod(nameof(SetSoftDeleteFilter), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)!
+                        .MakeGenericMethod(entityType.ClrType);
+
+                    method.Invoke(null, new object[] { modelBuilder });
+                }
+            }
+            modelBuilder.Entity<AuditableEntity>()
+                        .Property(e => e.Borrado)
+                        .HasDefaultValue(false);
+
+        }
+
+        private static void SetSoftDeleteFilter<T>(ModelBuilder builder) where T : AuditableEntity
+        {
+            builder.Entity<T>().HasQueryFilter(e => !e.Borrado);
+        }
+
+
     }
 }

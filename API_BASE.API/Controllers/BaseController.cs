@@ -1,6 +1,8 @@
-﻿using API_BASE.Application.Interfaces;
+﻿using API_BASE.Application.Common;
+using API_BASE.Application.Interfaces;
 using API_BASE.Domain.Base;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API_BASE.API.Controllers
 {
@@ -15,20 +17,36 @@ namespace API_BASE.API.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<TEntity>>> GetAll()
         {
             var result = await _repository.GetAllAsync();
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById:{id}")]
         public async Task<ActionResult<TEntity>> GetById(Guid id)
         {
             var entity = await _repository.GetByIdAsync(id);
             if (entity == null) return NotFound();
             return Ok(entity);
         }
+
+        [HttpGet("GetPaginated")]
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<TEntity>>>> GetAll([FromQuery] PaginationRequest paging)
+        {
+            var query = _repository.GetQueryable();
+            var total = await query.CountAsync();
+
+            var data = await query
+                .Skip((paging.Page - 1) * paging.Limit)
+                .Take(paging.Limit)
+                .ToListAsync();
+
+            var response = PaginatedResponse<TEntity>.Create(data, total, paging.Page, paging.Limit);
+            return Ok(ApiResponse<PaginatedResponse<TEntity>>.Ok(response));
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<TEntity>> Create([FromBody] TEntity entity)

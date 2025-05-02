@@ -22,6 +22,10 @@ namespace API_BASE.Infrastructure.Repositories
             return await _dbSet.FindAsync(id);
         }
 
+        /// <summary>
+        /// Usa solo si sabes que el volumen de datos será bajo.
+        /// Para filtros y paginación, usa GetQueryable().
+        /// </summary>
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
@@ -45,5 +49,11 @@ namespace API_BASE.Infrastructure.Repositories
             _dbSet.Remove(entity);
             await _context.SaveChangesAsync();
         }
+
+        public IQueryable<T> GetQueryable()
+        {
+            return _dbSet.AsQueryable();
+        }
+
     }
 }
