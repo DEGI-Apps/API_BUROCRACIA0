@@ -4,7 +4,7 @@ using API_BASE.Domain.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace API_BASE.API.Controllers
+namespace API_BASE.API.Controllers.Base
 {
     [ApiController]
     [Route("api/[controller]")]
