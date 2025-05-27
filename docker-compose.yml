@@ -1,0 +1,10 @@
+services:
+  api:
+    build:
+      context: ./
+    volumes:
+      - ./API_BASE.Infrastructure:/app/API_BASE.Infrastructure
+      - ./API_BASE.Domain:/app/API_BASE.Domain
+      - ./API_BASE.Application:/app/API_BASE.Application
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
