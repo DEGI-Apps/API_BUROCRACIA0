@@ -24,4 +24,8 @@
     <ProjectReference Include="..\API_BASE.Domain\API_BASE.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\External\" />
+  </ItemGroup>
+
 </Project>

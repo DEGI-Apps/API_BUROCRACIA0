@@ -1,5 +1,6 @@
 ﻿
 using API_BASE.Application.Interfaces;
+using API_BASE.Application.Interfaces.UserExternal;
 using API_BASE.Domain.Base;
 using API_BASE.Domain.Entities;
 using API_BASE.Infrastructure.Persistence.Configurations;
@@ -33,7 +34,7 @@ namespace API_BASE.Infrastructure.Persistence
         //Auditoria de tablas automatica
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var usuario = _currentUserService.NombreUsuario ?? "Sistema";
+            var usuario = _currentUserService.UserName ?? "Sistema";
             var ahora = DateTime.UtcNow;
 
             ActualizarAuditoriaBasica(usuario, ahora);

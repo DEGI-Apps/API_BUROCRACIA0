@@ -11,4 +11,11 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\External\" />
+    <Folder Include="Contracts\Dtos\External\" />
+    <Folder Include="Contracts\External\" />
+    <Folder Include="Services\External\" />
+  </ItemGroup>
+
 </Project>

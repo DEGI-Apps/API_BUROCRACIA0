@@ -1,4 +1,5 @@
 ﻿using API_BASE.Application.Interfaces;
+using API_BASE.Application.Interfaces.UserExternal;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,7 @@ namespace API_BASE.Infrastructure.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string? NombreUsuario =>
-            _httpContextAccessor.HttpContext?.User?.FindFirst("preferred_username")?.Value
-            ?? _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+        public string? UserName =>
+            _httpContextAccessor.HttpContext?.User?.Identity?.Name;
     }
 }
