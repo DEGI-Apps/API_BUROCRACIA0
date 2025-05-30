@@ -15,6 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+//infrastructure services
+builder.Services.AddInfrastructure();
+
 //Authentication
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
